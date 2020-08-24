@@ -48,7 +48,7 @@ public class SwiftSystemShortcutsPlugin: NSObject, FlutterPlugin {
     case "orientLandscapeLeft":
         let val = UIInterfaceOrientation.landscapeLeft.rawValue
         UIDevice.current.setValue(val, forKey: "orientation")
-         result("Orientation Changed to Landscape Left")
+        result("Orientation Changed to Landscape Left")
         break;
     case "orientLandscapeRight":
         let val = UIInterfaceOrientation.landscapeRight.rawValue

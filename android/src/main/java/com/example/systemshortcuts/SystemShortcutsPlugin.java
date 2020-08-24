@@ -104,6 +104,9 @@ public class SystemShortcutsPlugin implements FlutterPlugin, ActivityAware, Meth
                 break;
             case "bluetooth":
                 bluetooth();
+                break; 
+            case "silentMode":
+                silentMode();
                 break;
             case "checkBluetooth":
                 result.success(checkBluetooth());
@@ -112,6 +115,11 @@ public class SystemShortcutsPlugin implements FlutterPlugin, ActivityAware, Meth
                 result.notImplemented();
                 break;
         }
+    }
+
+    private void silentMode() {
+        AudioManager audioManager = (AudioManager) this.activity.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
     }
 
     private void home() {

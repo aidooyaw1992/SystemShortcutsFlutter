@@ -108,4 +108,13 @@ class SystemShortcuts {
     bool b = await _channel.invokeMethod('checkBluetooth');
     return b;
   }
+
+
+  static Future<Null> silentMode() async{
+    if (Platform.isIOS) {
+    } else {
+      await _channel.invokeMethod('silentMode');
+    }
+  }
+  
 }

@@ -105,6 +105,12 @@ class Body extends StatelessWidget {
           },
         ),
         FlatButton(
+          child: Text("silent mode"),
+          onPressed: () async {
+            await SystemShortcuts.silentMode();
+          },
+        ),
+        FlatButton(
           child: Text("Check Bluetooth"),
           onPressed: () async {
             bool b = await SystemShortcuts.checkBluetooth;
