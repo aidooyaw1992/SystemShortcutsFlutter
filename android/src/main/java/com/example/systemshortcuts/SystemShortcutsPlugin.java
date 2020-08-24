@@ -2,6 +2,7 @@ package com.example.systemshortcuts;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 
@@ -21,6 +23,8 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * SystemShortcutsPlugin
@@ -48,6 +52,14 @@ public class SystemShortcutsPlugin implements FlutterPlugin, ActivityAware, Meth
     @Override
     public void onAttachedToActivity(ActivityPluginBinding binding) {
         activity = binding.getActivity();
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        //Check if the phone is running Marshmallow or above
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+            //If the permission is not granted, launch an inbuilt activity to grant permission
+            if (!nm.isNotificationPolicyAccessGranted()) {
+                startActivity(new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS));
+            }
+        }
     }
 
     @Override
@@ -118,7 +130,10 @@ public class SystemShortcutsPlugin implements FlutterPlugin, ActivityAware, Meth
     }
 
     private void silentMode() {
+        NotificationManager nm = (NotificationManager)this.activity.getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
+
         AudioManager audioManager = (AudioManager) this.activity.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M && nm.isNotificationPolicyAccessGranted())
         audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
     }
 
